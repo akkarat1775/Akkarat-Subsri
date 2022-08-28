@@ -44,12 +44,15 @@
                 <img class="rounded-t-lg" src="/images/profile.jpg" alt=""/>
               </a>
               <div class="p-6">
-                <h5 class="text-gray-900 text-xl font-medium mb-2">I'm Akkarat Subsri </h5>
+                <h5 class="text-gray-900 text-xl font-medium mb-2">Hi I'm Akkarat Subsri </h5>
                 <h5 class="text-gray-900 text-xl font-medium mb-2">You can call me Vampryyy </h5>
-                <p class="text-gray-700 text-base mb-4">
-                  Um.
+                <h5 class="text-gray-900 text-xl font-medium mb-2">This is the information you need </h5>
+                <h5 class="text-gray-900 text-xl font-medium mb-2" id="studentName" style="text-align: center ;">Name: </h5>
+                <h5 class="text-gray-900 text-xl font-medium mb-2" id="studentID" style="text-align: center;">Student ID: </h5>
+                <h5 class="text-gray-900 text-xl font-medium mb-2" id="studentGpa" style="text-align: center;">GPA: </h5>
+                <h5 class="text-gray-900 text-xl font-medium mb-2" id="studentPosition" style="text-align: center;">Position: </h5>
                 </p>
-                <button type="button" class=" inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">Button</button>
+                <button type="button" class=" inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">DO NOT USE</button>
               </div>
             </div>
           </div>
@@ -116,7 +119,7 @@
            headers: { 
              'Content-Type': 'application/json',
              "Accepts": "application/json",
-             "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90b29scy5lY3BlLm51LmFjLnRoXC9uZXR3b3JrXC9hcGlcL2xvZ2luIiwiaWF0IjoxNjU5MTE3MTQxLCJleHAiOjE2NTkxMjA3NDEsIm5iZiI6MTY1OTExNzE0MSwianRpIjoiYjhNSHFSM0psRkU1T3JpcCIsInN1YiI6ODMsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.zzNktV9U3eVidZr6Yb5U5qLp4eNDh3K3G8VSvYv9nYc",
+             "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90b29scy5lY3BlLm51LmFjLnRoXC9uZXR3b3JrXC9hcGlcL2xvZ2luIiwiaWF0IjoxNjYxNzAxMjA1LCJleHAiOjE2NjE3MDQ4MDUsIm5iZiI6MTY2MTcwMTIwNSwianRpIjoiS3g1elRjeVYyaGNsRWtoNyIsInN1YiI6ODMsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.dAcUSPH2-1xtV3VwtSoLjFqtFX3SZj6qD5hAf9WIpvI",
            },
            success: function(data){
              console.log(data);
@@ -255,10 +258,11 @@
           //elementButtonSave.setAttribute("class","tealA400");
           
          
-          elementButtonSave.setAttribute("onclick","popupConfirm('"+items[i].fullname+"',this)");
+          elementButtonSave.setAttribute("onclick","sendData('"+items[i].student_id+"')");
           
-  
+          
           cell5.appendChild(elementButtonSave);
+
           
           
           tr.appendChild(cell5);
@@ -271,6 +275,26 @@
   
     function popupConfirm(fullname,objElement){
       alert(fullname);
+    }
+    function sendData(id){
+      //console.log(id);
+      $.ajax({
+        method: "GET",
+        url: "https://tools.ecpe.nu.ac.th/network/api/student/"+id,
+        dataType: 'json',
+        headers: {
+          'Content-Type': 'application/json',
+          "Accepts": "application/json",
+          "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90b29scy5lY3BlLm51LmFjLnRoXC9uZXR3b3JrXC9hcGlcL2xvZ2luIiwiaWF0IjoxNjYxNzAxMjA1LCJleHAiOjE2NjE3MDQ4MDUsIm5iZiI6MTY2MTcwMTIwNSwianRpIjoiS3g1elRjeVYyaGNsRWtoNyIsInN1YiI6ODMsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.dAcUSPH2-1xtV3VwtSoLjFqtFX3SZj6qD5hAf9WIpvI',
+        },
+        success: function(data){
+          console.log(data);
+          document.getElementById("studentName").innerHTML = "Name: "+data[0].fullname;
+          document.getElementById("studentID").innerHTML = "Student_ID: "+data[0].student_id;
+          document.getElementById("studentGpa").innerHTML = "GPA: "+data[0].gpa;
+          document.getElementById("studentPosition").innerHTML = "Position: "+data[0].position;
+        }
+      });
     }
   </script>
   
